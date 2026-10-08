@@ -79,15 +79,3 @@ Es una captura o punto de guardado del estado de los archivos en el repositorio 
 
 El estado es información interna y mutable que pertenece y es controlada por el propio componente. Las props (propiedades) son datos externos y de solo lectura que un componente padre le pasa a un componente hijo.
 
-## Publicar en GitHub
-
-Para entregar la prueba, crea un repositorio público en GitHub y publica el historial desde la carpeta del proyecto:
-
-```powershell
-git init
-git add .
-git commit -m "Construye aplicación de gestión de solicitudes"
-git branch -M main
-git remote add origin https://github.com/USUARIO/REPOSITORIO.git
-git push -u origin main
-```
