@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 const API_URL = 'http://localhost:5000/api/requests'
-const EMPTY_FORM = { applicant_name: '', document_type: '', request_date: '' }
+const EMPTY_FORM = { applicant_name: '', document_type: '', document_number: '', request_date: '' }
 const STATUS_OPTIONS = ['pendiente', 'aprobada', 'rechazada']
 
 async function readResponse(response) {
@@ -118,6 +118,10 @@ export default function App() {
             </select>
           </label>
           <label className="field">
+            <span>Número de documento</span>
+            <input name="document_number" value={form.document_number} onChange={updateField} placeholder="Ej. 00123456" required maxLength="40" />
+          </label>
+          <label className="field">
             <span>Fecha de solicitud</span>
             <input type="date" name="request_date" value={form.request_date} onChange={updateField} required />
           </label>
@@ -134,16 +138,17 @@ export default function App() {
         </div>
         <div className="table-wrap">
           <table>
-            <thead><tr><th>Solicitante</th><th>Documento</th><th>Fecha</th><th>Estado</th><th className="action-heading">Actualizar estado</th></tr></thead>
+            <thead><tr><th>Solicitante</th><th>Tipo de documento</th><th>Número</th><th>Fecha</th><th>Estado</th><th className="action-heading">Actualizar estado</th></tr></thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan="5" className="empty-state">Cargando solicitudes…</td></tr>
+                <tr><td colSpan="6" className="empty-state">Cargando solicitudes…</td></tr>
               ) : requests.length === 0 ? (
-                <tr><td colSpan="5" className="empty-state">Todavía no hay solicitudes registradas.</td></tr>
+                <tr><td colSpan="6" className="empty-state">Todavía no hay solicitudes registradas.</td></tr>
               ) : requests.map((item) => (
                 <tr key={item.id}>
                   <td className="applicant-cell"><span className="row-marker" />{item.applicant_name}</td>
                   <td>{item.document_type}</td>
+                  <td>{item.document_number || '—'}</td>
                   <td>{new Intl.DateTimeFormat('es', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(`${item.request_date}T00:00:00Z`))}</td>
                   <td><span className={`status status-${item.status}`}>{item.status}</span></td>
                   <td><select className="status-select" aria-label={`Cambiar estado de ${item.applicant_name}`} value={item.status} onChange={(event) => updateStatus(item.id, event.target.value)}>

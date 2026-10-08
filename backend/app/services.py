@@ -11,7 +11,7 @@ def get_requests():
 
 def add_request(payload):
     # Aquí se valida la entrada antes de permitir que llegue a la base de datos.
-    fields = ("applicant_name", "document_type", "request_date")
+    fields = ("applicant_name", "document_type", "document_number", "request_date")
     values = {field: payload.get(field, "") for field in fields}
 
     # Normalizamos espacios antes de validar para no aceptar valores "vacíos".

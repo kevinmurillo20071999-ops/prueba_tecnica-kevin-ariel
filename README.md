@@ -37,7 +37,7 @@ Abre la URL que muestre Vite, normalmente `http://localhost:5173`.
 
 | Método | Ruta | Descripción |
 | --- | --- | --- |
-| `POST` | `/api/requests` | Crea una solicitud; requiere `applicant_name`, `document_type` y `request_date` (`AAAA-MM-DD`). |
+| `POST` | `/api/requests` | Crea una solicitud; requiere `applicant_name`, `document_type`, `document_number` y `request_date` (`AAAA-MM-DD`). |
 | `GET` | `/api/requests` | Devuelve todas las solicitudes, de la más reciente a la más antigua. |
 | `PATCH` | `/api/requests/<id>/status` | Actualiza el estado usando `{"status":"aprobada"}`. Estados válidos: `pendiente`, `aprobada`, `rechazada`. |
 

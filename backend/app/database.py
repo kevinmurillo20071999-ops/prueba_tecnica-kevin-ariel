@@ -27,11 +27,20 @@ def initialize_database(app):
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 applicant_name TEXT NOT NULL,
                 document_type TEXT NOT NULL,
+                document_number TEXT NOT NULL,
                 request_date TEXT NOT NULL,
                 status TEXT NOT NULL DEFAULT 'pendiente'
                     CHECK (status IN ('pendiente', 'aprobada', 'rechazada'))
             )
             """
         )
+        columns = {
+            row["name"] for row in database.execute("PRAGMA table_info(requests)")
+        }
+        if "document_number" not in columns:
+            # Las bases anteriores conservan sus filas y reciben un valor vacío hasta migrarse.
+            database.execute(
+                "ALTER TABLE requests ADD COLUMN document_number TEXT NOT NULL DEFAULT ''"
+            )
         database.commit()
         app.teardown_appcontext(close_database)
