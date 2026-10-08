@@ -40,6 +40,7 @@ h2 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: 0; }
 .section-index, .record-count { color: var(--muted); font: 10px var(--mono); }
 .request-form { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr auto; align-items: end; gap: 14px; }
 .field { display: grid; gap: 8px; color: #263747; font-size: 11px; font-weight: 700; }
+.field-warning { color: #245f88; font-size: 10px; font-weight: 500; line-height: 1.4; }
 .field input, .field select { width: 100%; height: 43px; padding: 0 12px; border: 1px solid #d5e2ed; border-radius: 2px; outline: none; background: var(--paper); color: var(--ink); font-size: 12px; }
 .field input:focus, .field select:focus, .status-select:focus { border-color: #4b9bd2; box-shadow: 0 0 0 2px #4b9bd220; }
 .field input::placeholder { color: #8b9aa7; }

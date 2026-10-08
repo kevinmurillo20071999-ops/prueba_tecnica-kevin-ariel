@@ -13,6 +13,7 @@ async function readResponse(response) {
 export default function App() {
   const [requests, setRequests] = useState([])
   const [form, setForm] = useState(EMPTY_FORM)
+  const [fieldWarnings, setFieldWarnings] = useState({})
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -36,12 +37,24 @@ export default function App() {
 
   function updateField(event) {
     const fieldName = event.target.name
-    const fieldValue = fieldName === 'applicant_name'
-      ? event.target.value.replace(/[^\p{L}\s'’-]/gu, '')
-      : fieldName === 'document_number'
-        ? event.target.value.replace(/\D/g, '')
-        : event.target.value
+    const enteredValue = event.target.value
+    let warning = ''
+    let fieldValue = enteredValue
+
+    if (fieldName === 'applicant_name') {
+      fieldValue = enteredValue.replace(/[^\p{L}\s'’-]/gu, '')
+      if (fieldValue !== enteredValue) warning = 'Solo se permiten letras.'
+    } else if (fieldName === 'document_number') {
+      fieldValue = enteredValue.replace(/\D/g, '')
+      if (fieldValue !== enteredValue) warning = 'Solo se permiten números.'
+    }
+
     setForm((current) => ({ ...current, [fieldName]: fieldValue }))
+    setFieldWarnings((current) => ({ ...current, [fieldName]: warning }))
+  }
+
+  function clearFieldWarning(fieldName) {
+    setFieldWarnings((current) => ({ ...current, [fieldName]: '' }))
   }
 
   async function submitRequest(event) {
@@ -111,7 +124,8 @@ export default function App() {
         <form className="request-form" onSubmit={submitRequest}>
           <label className="field field-name">
             <span>Nombre del solicitante</span>
-            <input name="applicant_name" value={form.applicant_name} onChange={updateField} placeholder="Ej. Camila Torres" required maxLength="120" />
+            <input name="applicant_name" value={form.applicant_name} onChange={updateField} onBlur={() => clearFieldWarning('applicant_name')} placeholder="Ej. Camila Torres" required maxLength="120" aria-invalid={Boolean(fieldWarnings.applicant_name)} aria-describedby="applicant-name-warning" />
+            {fieldWarnings.applicant_name && <small className="field-warning" id="applicant-name-warning" role="status">{fieldWarnings.applicant_name}</small>}
           </label>
           <label className="field">
             <span>Tipo de documento</span>
@@ -125,7 +139,8 @@ export default function App() {
           </label>
           <label className="field">
             <span>Número de documento</span>
-            <input type="text" inputMode="numeric" pattern="[0-9]+" title="Ingresa solo números." name="document_number" value={form.document_number} onChange={updateField} placeholder="Ej. 00123456" required maxLength="40" />
+            <input type="text" inputMode="numeric" pattern="[0-9]+" title="Ingresa solo números." name="document_number" value={form.document_number} onChange={updateField} onBlur={() => clearFieldWarning('document_number')} placeholder="Ej. 00123456" required maxLength="40" aria-invalid={Boolean(fieldWarnings.document_number)} aria-describedby="document-number-warning" />
+            {fieldWarnings.document_number && <small className="field-warning" id="document-number-warning" role="status">{fieldWarnings.document_number}</small>}
           </label>
           <label className="field">
             <span>Fecha de solicitud</span>
