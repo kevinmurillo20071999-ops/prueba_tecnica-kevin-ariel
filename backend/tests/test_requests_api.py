@@ -46,6 +46,21 @@ class RequestsApiTest(unittest.TestCase):
         empty_request = self.client.post("/api/requests", json={})
         self.assertEqual(empty_request.status_code, 400)
 
+        valid_fields = {
+            "applicant_name": "Ana Pérez",
+            "document_type": "Cédula",
+            "document_number": "123456789",
+            "request_date": "2026-10-08",
+        }
+        invalid_requests = [
+            {**valid_fields, "applicant_name": "Ana Pérez2"},
+            {**valid_fields, "document_number": "12345A"},
+            {**valid_fields, "document_type": "Licencia"},
+        ]
+        for invalid_request in invalid_requests:
+            response = self.client.post("/api/requests", json=invalid_request)
+            self.assertEqual(response.status_code, 400)
+
         missing_request = self.client.patch(
             "/api/requests/999/status", json={"status": "aprobada"}
         )

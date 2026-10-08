@@ -3,6 +3,7 @@ from datetime import date
 from app import repository
 
 ALLOWED_STATUSES = {"pendiente", "aprobada", "rechazada"}
+ALLOWED_DOCUMENT_TYPES = {"Cédula", "Pasaporte", "DNI", "Otro"}
 
 
 def get_requests():
@@ -18,6 +19,20 @@ def add_request(payload):
     values = {field: value.strip() if isinstance(value, str) else "" for field, value in values.items()}
     if not all(values.values()):
         return None, "Todos los campos son obligatorios."
+
+    applicant_name = values["applicant_name"]
+    if not any(character.isalpha() for character in applicant_name) or not all(
+        character.isalpha() or character.isspace() or character in "-'’"
+        for character in applicant_name
+    ):
+        return None, "El nombre solo puede contener letras, espacios, apóstrofos o guiones."
+
+    if values["document_type"] not in ALLOWED_DOCUMENT_TYPES:
+        return None, "Selecciona un tipo de documento válido."
+
+    document_number = values["document_number"]
+    if not document_number.isascii() or not document_number.isdigit():
+        return None, "El número de documento debe contener solo dígitos."
 
     try:
         date.fromisoformat(values["request_date"])

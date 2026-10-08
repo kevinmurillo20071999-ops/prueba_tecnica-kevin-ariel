@@ -35,7 +35,13 @@ export default function App() {
   }, [])
 
   function updateField(event) {
-    setForm((current) => ({ ...current, [event.target.name]: event.target.value }))
+    const fieldName = event.target.name
+    const fieldValue = fieldName === 'applicant_name'
+      ? event.target.value.replace(/[^\p{L}\s'’-]/gu, '')
+      : fieldName === 'document_number'
+        ? event.target.value.replace(/\D/g, '')
+        : event.target.value
+    setForm((current) => ({ ...current, [fieldName]: fieldValue }))
   }
 
   async function submitRequest(event) {
@@ -119,7 +125,7 @@ export default function App() {
           </label>
           <label className="field">
             <span>Número de documento</span>
-            <input name="document_number" value={form.document_number} onChange={updateField} placeholder="Ej. 00123456" required maxLength="40" />
+            <input type="text" inputMode="numeric" pattern="[0-9]+" title="Ingresa solo números." name="document_number" value={form.document_number} onChange={updateField} placeholder="Ej. 00123456" required maxLength="40" />
           </label>
           <label className="field">
             <span>Fecha de solicitud</span>

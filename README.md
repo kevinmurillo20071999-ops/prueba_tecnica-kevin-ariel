@@ -41,7 +41,7 @@ Abre la URL que muestre Vite, normalmente `http://localhost:5173`.
 | `GET` | `/api/requests` | Devuelve todas las solicitudes, de la más reciente a la más antigua. |
 | `PATCH` | `/api/requests/<id>/status` | Actualiza el estado usando `{"status":"aprobada"}`. Estados válidos: `pendiente`, `aprobada`, `rechazada`. |
 
-Los errores de validación responden con HTTP `400`; una solicitud inexistente responde `404`. Cada capa tiene una responsabilidad: `routes.py` define HTTP, `services.py` valida las reglas y `repository.py` ejecuta consultas SQLite.
+El nombre solo acepta letras, espacios, apóstrofos y guiones; el número de documento solo acepta dígitos ASCII. Todos los campos son obligatorios y el tipo debe ser una de las opciones del formulario. Los errores de validación responden con HTTP `400`; una solicitud inexistente responde `404`. Cada capa tiene una responsabilidad: `routes.py` define HTTP, `services.py` valida las reglas y `repository.py` ejecuta consultas SQLite.
 
 ## Pruebas
 
