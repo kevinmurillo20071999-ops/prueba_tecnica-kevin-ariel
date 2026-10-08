@@ -50,7 +50,37 @@ Desde la carpeta `backend`, con el entorno virtual activado:
 ```powershell
 python -m unittest discover -s tests -v
 ```
+## Conocimientos básicos
 
+### Métodos HTTP: `GET` y `POST`
+
+- `GET` solicita o consulta información. Los parámetros de búsqueda suelen aparecer en la URL.
+- `POST` envía datos en el cuerpo de la petición y suele utilizarse para crear o procesar un recurso.
+
+`POST` no es automáticamente más seguro que `GET`. Para proteger los datos durante el envío se debe usar HTTPS; además, las credenciales no deben incluirse en URLs.
+
+### `JOIN` en SQL
+
+`JOIN` combina filas de distintas tablas cuando coinciden los valores de las columnas relacionadas.
+
+```sql
+SELECT Usuarios.nombre, Pedidos.total
+FROM Usuarios
+JOIN Pedidos ON Usuarios.id = Pedidos.usuario_id;
+```
+
+### Variables de entorno: `.env`
+
+Un archivo `.env` puede guardar configuración local, como credenciales o claves de API. No se debe subir al repositorio si contiene secretos. En este proyecto no se requiere un archivo `.env` para ejecutarlo.
+
+### Commit en Git
+
+Un commit registra un conjunto de cambios en el historial del repositorio. Los commits pequeños y enfocados ayudan a entender la evolución, localizar errores y revertir cambios específicos.
+
+### Estado y props en React
+
+- **Estado (`state`):** datos propios de un componente. Se actualizan mediante las funciones de estado de React.
+- **Props:** datos que un componente recibe de su componente padre; el componente hijo los trata como valores de solo lectura.
 ## Publicar en GitHub
 
 Para entregar la prueba, crea un repositorio público en GitHub y publica el historial desde la carpeta del proyecto:
